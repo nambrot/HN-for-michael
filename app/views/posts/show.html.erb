@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @post.title %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @post.url %>
+</p>
+
+<% if !@post.comments.blank? %>
+Comments:
+  <% for comment in @post.comments %>
+      <%= comment.text %>
+  <% end %>
+ 
+<% else %>
+   No Comments
+<% end %>
+
+<h1>New comment</h1>
+
+<%= form_for([@post, @comment]) do |f| %>
+  <% if @comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+      <% @comment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :text %><br />
+    <%= f.text_area :text %>
+  </div>
+  
+  <div class="actions">
+    <%= button_to "Create", :action => "create", :remote => true, :form => { "data-type" => "json" }
+ %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', comments_path %>
+
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
